@@ -3,6 +3,14 @@
 <odoo>
     <menuitem id="property_ads_root_menu" name="Property Ads" sequence="1"
         web_icon="real_estate_ads,static/description/icon.png" />
-    <menuitem id="property_ads_menu" name="Property Ads" sequence="10"
+    <menuitem id="property_ads_menu" name="Ads" sequence="10"
         parent="property_ads_root_menu" action="action_property" />
+    <menuitem id="menu_property_ads_settings" name="Settings" sequence="20"
+        parent="property_ads_root_menu" />
+    <menuitem id="menu_property_type" name="Property Types" sequence="90"
+        parent="menu_property_ads_settings" action="action_estate_property_type" />
+    <menuitem id="menu_property_tag" name="Property Tags" sequence="100"
+        parent="menu_property_ads_settings" action="action_estate_property_tag" />
+    <menuitem id="menu_property_offer" name="Offers" sequence="110"
+        parent="menu_property_ads_settings" action="action_estate_property_offer" />
 </odoo>

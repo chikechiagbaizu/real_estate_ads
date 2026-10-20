@@ -7,10 +7,26 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sold" string="Sold" type="object" class="btn-primary" />
+                    <button name="action_cancel" string="Cancel" type="object"
+                        class="btn-danger" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="received,accepted,sold,cancelled" />
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                            name="action_view_offers" type="object">
+                            <field name="offer_count" string="Offers" widget="statinfo" />
+                        </button>
+                    </div>
                     <group>
-                        <field name="name" />
+                        <field name="name" placeholder="Enter Property Name" widget="char_emojis" />
+                        <field name="tag_ids" widget="many2many_tags"
+                            placeholder="Select Property Tags" />
                         <group>
+                            <field name='type_id' />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -20,6 +36,42 @@
                             <field name="selling_price" />
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" widget="boolean_toggle" />
+                                <field name="garden" widget="boolean_toggle" />
+                                <field name="garden_area" invisible="garden == False"
+                                    readonly="garden == True" />
+                                <field name="garden_orientation" invisible="garden == False"
+                                    widget="selection_badge" />
+                                <field name="total_area" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name='offer_ids'>
+                                <list editable="bottom">
+                                    <field name="price" />
+                                    <field name="property_id" />
+                                    <field name="partner_id" />
+                                    <field name="creation_date" />
+                                    <field name="validity" />
+                                    <field name="deadline" widget="remaining_days" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="sales_id" widget="many2one_avatar_user" />
+                                <field name="buyer_id" />
+                                <field name="phone" widget="email" />
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -32,11 +84,14 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name" />
+                <field name="type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="postcode" />
                 <field name="date_availability" />
                 <field name="expected_price" />
                 <field name="best_offer" />
                 <field name="selling_price" />
+                <field name="state" widget="badge" />
             </list>
         </field>
     </record>

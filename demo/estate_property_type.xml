@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <record id="estate_property_type_duplex" model="estate.property.type">
+            <field name="name">Duplex</field>
+        </record>
+
+        <record id="estate_property_type_apartment" model="estate.property.type">
+            <field name="name">Apartment</field>
+        </record>
+
+        <record id="estate_property_type_bungalow" model="estate.property.type">
+            <field name="name">Bungalow</field>
+        </record>
+
+        <record id="estate_property_type_penthouse" model="estate.property.type">
+            <field name="name">Penthouse</field>
+        </record>
+
+        <record id="estate_property_type_mansion" model="estate.property.type">
+            <field name="name">Mansion</field>
+        </record>
+
+        <record id="estate_property_type_mansion" model="estate.property.type">
+            <field name="name">Mansion</field>
+        </record>
+
+        <record id="estate_property_type_detached_house" model="estate.property.type">
+            <field name="name">Detached House</field>
+        </record>
+
+        <record id="estate_property_type_semi_detached_house" model="estate.property.type">
+            <field name="name">Semi Detached House</field>
+        </record>
+
+        <record id="estate_property_type_terrace_house" model="estate.property.type">
+            <field name="name">Terrace House</field>
+        </record>
+    </data>
+</odoo>
