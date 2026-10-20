@@ -6,16 +6,14 @@ class AbstractOffer(models.AbstractModel):
     _name = 'abstract.model.offer'
     _description = 'Abstract Offers'
 
-    partner_email = fields.Char(string='Email')
-    partner_phone = fields.Char(string='Phone')
-
-class TransientOffer(models.TransientModel):
-    _name = 'transient.model.offer'
-    _description = 'Transient Offers'
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Customer')
+    partner_email = fields.Char(related='partner_id.email', string='Email')
+    partner_phone = fields.Char(related='partner_id.phone', string='Phone')
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Property Offers'
+    _inherit = ['abstract.model.offer']
 
     name = fields.Char(string='Description', compute='_compute_name')
     price = fields.Float(string='Price', required=True)
@@ -23,7 +21,6 @@ class PropertyOffer(models.Model):
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
     ], string='Status')
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Customer')
     property_id = fields.Many2one(comodel_name='estate.property', string='Property')
     validity = fields.Integer(string='Validity (days)')
     deadline = fields.Date(string='Deadline', compute='_compute_deadline')
