@@ -1,14 +1,6 @@
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
-
-class AbstractOffer(models.AbstractModel):
-    _name = 'abstract.model.offer'
-    _description = 'Abstract Offers'
-
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Customer')
-    partner_email = fields.Char(related='partner_id.email', string='Email')
-    partner_phone = fields.Char(related='partner_id.phone', string='Phone')
+from odoo.exceptions import ValidationError, UserError
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -20,29 +12,39 @@ class PropertyOffer(models.Model):
     status = fields.Selection(selection=[
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
-    ], string='Status')
-    property_id = fields.Many2one(comodel_name='estate.property', string='Property')
-    validity = fields.Integer(string='Validity (days)')
+    ], string='Status', readonly=True)
+    property_id = fields.Many2one(comodel_name='estate.property', string='Property', required=True)
+    validity = fields.Integer(string='Validity (days)', default=7)
     deadline = fields.Date(string='Deadline', compute='_compute_deadline')
-    creation_date = fields.Date(string='Creation Date')
+    creation_date = fields.Date(string='Creation Date', default=fields.Date.today, readonly=True)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if property_id:
+                property = self.env['estate.property'].browse(property_id)
+                if property.state == 'accepted':
+                    raise UserError(-('You cannot add an offer to a %s property.',property.state))
+        offers = super().create(vals_list)
+        for property in offers.property_id:
+            if property.state == 'new':
+                property.state = 'received'
+        return offers
+    
     @api.depends('validity', 'creation_date')
     def _compute_deadline(self):
         for record in self:
-            if not record.validity or not record.creation_date:
-                record.write({
-                    'deadline': False
-                })
+            if record.creation_date:
+                record.deadline = record.creation_date + relativedelta(days=record.validity)
             else:
-                record.write({
-                    'deadline': record.creation_date + relativedelta(days=record.validity)
-                })
+                record.deadline = False
     
     @api.constrains('validity')
     def _check_validity(self):
         for record in self:
             if record.validity < 1:
-                raise ValidationError(_('Validity field must be greater than 1'))
+                raise ValidationError(_('Validity field must be greater than 0'))
 
     @api.depends('property_id','partner_id')
     def _compute_name(self):
@@ -51,3 +53,17 @@ class PropertyOffer(models.Model):
                 record.name = f"{record.property_id.name} - {record.partner_id.name}"
             else:
                 record.name = False
+
+    def action_accept_offer(self):
+        self.ensure_one()
+        if self.property_id.offer_ids.filtered(lambda o: o.status == 'accepted'):
+            raise UserError(_('An offer has already been accepted for this property.'))
+        self.status = 'accepted'
+        self.property_id.state = 'accepted'
+        
+    def action_decline_offer(self):
+        self.ensure_one()
+        if self.status == 'refused':
+            raise UserError('Property offer already refused.')
+        self.status = 'refused'
+        self.property_id.state = 'received'

@@ -5,6 +5,7 @@
         <field name="name">Property Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="real_estate_ads.estate_property_offer_list_view" />
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your Property Offer
@@ -17,6 +18,7 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="real_estate_ads.estate_property_offer_list_view" />
         <field name="domain">[('property_id','=',active_id)]</field>
     </record>
 </odoo>

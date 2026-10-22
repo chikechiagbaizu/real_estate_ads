@@ -1,5 +1,5 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 class Property(models.Model):
     _name = 'estate.property'
@@ -7,13 +7,13 @@ class Property(models.Model):
 
     name = fields.Char(string='Name', required=True)
     tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Property Tag')
-    type_id = fields.Many2one(comodel_name='estate.property.type', string='Property Type', ondelete='cascade')
+    type_id = fields.Many2one(comodel_name='estate.property.type', string='Property Type')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From')
     expected_price = fields.Float(string='Expected Price')
-    selling_price = fields.Float(string='Selling Price')
-    best_offer = fields.Float(string='Best Offer', related='offer_ids.price')
+    selling_price = fields.Float(string='Selling Price', compute='_compute_selling_price', store=True)
+    best_offer = fields.Float(string='Best Offer', compute='_compute_best_offer')
     bedrooms = fields.Integer(string='Bedrooms')
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer(string='Fascades')
@@ -44,14 +44,7 @@ class Property(models.Model):
     @api.depends('living_area','garden_area')
     def _compute_total_area(self):
         for record in self:
-            if not record.living_area or not record.garden_area:
-                record.write({
-                    'total_area': False
-                })
-            else:
-                record.write({
-                    'total_area': record.living_area + record.garden_area
-                })
+            record.total_area = record.living_area + record.garden_area
     
     def action_sold(self):
         if self.state == 'cancelled':
@@ -87,3 +80,32 @@ class Property(models.Model):
                 'default_property_id': self.id,
             }
         }
+    
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < 0.0:
+                raise ValidationError('Selling price cannot be negative.')
+
+    @api.constrains('expected_price')
+    def _check_expected_price(self):
+        for record in self:
+            if record.expected_price < 0.0:
+                raise ValidationError('Expected price cannot be negative.')
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_offer = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_offer = 0
+    
+    @api.depends('offer_ids.status','offer_ids.price')
+    def _compute_selling_price(self):
+        for record in self:
+            accepted = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if accepted:
+                record.selling_price = record.best_offer
+            else:
+                record.selling_price = 0.0

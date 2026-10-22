@@ -19,21 +19,21 @@
     ],
     'data': [
         # Security & Data
+        'security/ir.model.access.csv',
         'data/estate_property_type.xml',
         'data/estate.property.tag.csv',
-        'security/ir.model.access.csv',
+
+        # Views
+        'views/property_view.xml',
+        'views/property_offer_view.xml',
+        'views/property_type_view.xml',
+        'views/property_tag_view.xml',
 
         # Actions
         'views/property_action.xml',
         'views/property_offer_action.xml',
         'views/property_type_action.xml',
         'views/property_tag_action.xml',
-
-        # Views
-        'views/property_view.xml',
-        'views/property_type_view.xml',
-        'views/property_tag_view.xml',
-        'views/property_offer_view.xml',
 
         # Menus
         'views/menu_items.xml',

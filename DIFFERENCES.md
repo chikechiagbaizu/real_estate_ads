@@ -87,6 +87,21 @@ No other version-related differences were encountered in this section.
 
 No other version-related differences were encountered in this section.
 
+### Section 5: Understanding Odoo Views
+
+**Topics covered:** Search, Kanban, Pivot, Graph, Gantt, and Calendar views.
+
+#### Confirmed differences
+
+**1. List view element: `tree` replaced by `list`**
+
+- **Course (Odoo 16):** May use `<tree>` as the root element for list views.
+- **My implementation (Odoo 19.0):** Uses `<list>`.
+- **Reason:** Odoo 19.0 uses `<list>` as the root element for list views.
+- **Impact:** Older XML view definitions using `<tree>` must be adapted when porting to Odoo 19.0.
+
+No other version-related differences were encountered in this section.
+
 ---
 
 *This document will be updated as I progress through the course. Only tested or source-verified findings will be marked as confirmed.*
