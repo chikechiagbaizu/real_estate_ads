@@ -64,9 +64,11 @@
                                     <field name="deadline" widget="remaining_days" />
                                     <field name="status" readonly="1" />
                                     <button name="action_accept_offer" string="Accept" type="object"
-                                        icon="fa-check" groups="base.group_system" />
+                                        icon="fa-check"
+                                        groups="real_estate_ads.group_property_manager" />
                                     <button name="action_decline_offer" string="Decline"
-                                        type="object" icon="fa-times" groups="base.group_system" />
+                                        type="object" icon="fa-times"
+                                        groups="real_estate_ads.group_property_manager" />
                                 </list>
                             </field>
                         </page>

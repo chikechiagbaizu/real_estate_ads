@@ -14,7 +14,7 @@
                         <field name="partner_phone" widget="phone" />
                         <field name="partner_email" widget="email" />
                         <field name="validity" />
-                        <field name="status" groups="base.group_system" />
+                        <field name="status" groups="real_estate_ads.group_property_manager" />
                         <field name="property_id" />
                         <field name="deadline" />
                     </group>
