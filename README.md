@@ -52,8 +52,8 @@ This process helps me understand the framework rather than simply copy working c
 | 3 | Creating your First Odoo Application | ✅ |
 | 4 | In-depth Understanding of Models and Logic | ✅ |
 | 5 | In-depth Understanding of Views | ✅ |
-| 6 | Expanding on Security: Groups, Access Rights and Record Rules | 🟨 |
-| 7 | Understanding Automation, Actions and Reports | ⬜ |
+| 6 | Expanding on Security: Groups, Access Rights and Record Rules | ✅ |
+| 7 | Understanding Automation, Actions and Reports | 🟨 |
 | 8 | Internationalization (i18n and `.po` files) | ⬜ |
 | 9 | Getting Advanced with Mixins and Useful Classes | ⬜ |
 | 10 | Working with Emails and Templates | ⬜ |
