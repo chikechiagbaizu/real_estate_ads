@@ -114,7 +114,3 @@ No other version-related differences were encountered in this section.
 - **My implementation (Odoo 19.0):** I needed to create a **Privilege** under a category before creating the group.
 - **Reason:** Odoo 19.0 organizes group configuration using the newer Privileges and Groups interface, where privileges help organize access rights and associate groups with application features.
 - **Impact:** When configuring security in Odoo 19.0, I need to understand the relationship between categories, privileges, and groups rather than following the older group-creation workflow directly.
-
----
-
-*This document will be updated as I progress through the course. Only tested or source-verified findings will be marked as confirmed.*
