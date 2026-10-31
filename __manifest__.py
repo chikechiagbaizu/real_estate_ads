@@ -19,9 +19,9 @@
     ],
     'data': [
         # Security & Data
-        'security/ir.model.access.csv',
         'security/res.groups.xml',
         'security/ir_rule.xml',
+        'security/ir.model.access.csv',
         'data/estate_property_type.xml',
         'data/estate.property.tag.csv',
 

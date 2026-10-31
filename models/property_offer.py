@@ -1,6 +1,7 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
+from odoo.tools.translate import _
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
